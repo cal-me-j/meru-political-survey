@@ -37,6 +37,15 @@
         button { background-color: #0056b3; color: white; border: none; padding: 16px 20px; font-size: 18px; border-radius: 8px; cursor: pointer; margin-top: 40px; width: 100%; font-weight: bold; }
         button:hover { background-color: #004494; }
         button:disabled { background-color: #cccccc; }
+
+        /* Added Styles to support specific request requirements */
+        #public_approval_section label { font-weight: normal; margin-top: 5px; }
+        #public_approval_section .card-title { font-weight: bold; }
+        .radio-item { margin-bottom: 15px; }
+        .radio-item label { display: flex; align-items: center; cursor: pointer; }
+        .radio-item input[type="radio"] { margin-right: 8px; width: 18px; height: 18px; }
+        .radio-item .reason-box { margin-left: 26px; margin-top: 5px; padding-bottom: 5px; }
+        .radio-item .reason-box label { margin-top: 0; font-size: 0.9em; color: #555; }
     </style>
 </head>
 <body>
@@ -89,73 +98,123 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             <option value="Other">Other</option>
         </select>
 
-        <h3>Public Approval Rating.</h3>
+        <div id="public_approval_section">
+            <h3>Public Approval Rating.</h3>
 
-        <!-- RUTO -->
-        <div class="card">
-            <span class="card-title">In your opinion, if election is held today, whom are you voting for as President?</span>
-            <div class="radio">
-                <label><input type="radio" name="president_support" value="ruto" onchange="toggleCandidateFields('ruto', 'Yes')" required> H.E Dr. William Samoei Ruto</label>
-                <label><input type="radio" name="president_support" value="gachagua" onchange="toggleCandidateFields('gachagua', 'Yes')"> Rigathi Gachagua</label>
-				<label><input type="radio" name="president_support" value="matiangi" onchange="toggleCandidateFields('matiangi', 'Yes')"> Fred Matiangi</label>
-				<label><input type="radio" name="president_support" value="karua" onchange="toggleCandidateFields('karua', 'Yes')"> Martha Karua</label>
-				<label><input type="radio" name="president_support" value="babu" onchange="toggleCandidateFields('babu', 'Yes')"> Babu Owino</label>
-				<label><input type="radio" name="president_support" value="sifuna" onchange="toggleCandidateFields('sifuna', 'Yes')"> Edwin Sifuna</label>
-				<label><input type="radio" name="president_support" value="maraga" onchange="toggleCandidateFields('maraga', 'Yes')"> David Maraga</label>
-				<label><input type="radio" name="president_support" value="owalo" onchange="toggleCandidateFields('owalo', 'Yes')"> Eliud Owalo</label>
-				<label><input type="radio" name="president_support" value="other" onchange="toggleCandidateFields('other', 'Yes')"> Other</label>
+            <div class="card">
+                <span class="card-title">In your opinion, if election is held today, whom are you voting for as President?</span>
+                <div class="radio">
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="ruto" onchange="toggleCandidateFields('ruto', 'Yes')" required> H.E Dr. William Samoei Ruto</label>
+                        <div id="reason_box_ruto" class="reason-box president-reason"><label id="label_ruto">Why do you support them?</label><input type="text" name="reason_ruto_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="gachagua" onchange="toggleCandidateFields('gachagua', 'Yes')"> Rigathi Gachagua</label>
+                        <div id="reason_box_gachagua" class="reason-box president-reason"><label id="label_gachagua">Why do you support them?</label><input type="text" name="reason_gachagua_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="matiangi" onchange="toggleCandidateFields('matiangi', 'Yes')"> Fred Matiangi</label>
+                        <div id="reason_box_matiangi" class="reason-box president-reason"><label id="label_matiangi">Why do you support them?</label><input type="text" name="reason_matiangi_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="karua" onchange="toggleCandidateFields('karua', 'Yes')"> Martha Karua</label>
+                        <div id="reason_box_karua" class="reason-box president-reason"><label id="label_karua">Why do you support them?</label><input type="text" name="reason_karua_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="babu" onchange="toggleCandidateFields('babu', 'Yes')"> Babu Owino</label>
+                        <div id="reason_box_babu" class="reason-box president-reason"><label id="label_babu">Why do you support them?</label><input type="text" name="reason_babu_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="sifuna" onchange="toggleCandidateFields('sifuna', 'Yes')"> Edwin Sifuna</label>
+                        <div id="reason_box_sifuna" class="reason-box president-reason"><label id="label_sifuna">Why do you support them?</label><input type="text" name="reason_sifuna_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="maraga" onchange="toggleCandidateFields('maraga', 'Yes')"> David Maraga</label>
+                        <div id="reason_box_maraga" class="reason-box president-reason"><label id="label_maraga">Why do you support them?</label><input type="text" name="reason_maraga_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="owalo" onchange="toggleCandidateFields('owalo', 'Yes')"> Eliud Owalo</label>
+                        <div id="reason_box_owalo" class="reason-box president-reason"><label id="label_owalo">Why do you support them?</label><input type="text" name="reason_owalo_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="president_support" value="other" onchange="toggleCandidateFields('other', 'Yes')"> Other</label>
+                        <div id="other_input_president" class="reason-box president-reason" style="display: none;">
+                            <label>Please specify the person's name:</label>
+                            <input type="text" name="other_president_name" placeholder="Enter candidate name">
+                        </div>
+                        <div id="reason_box_other" class="reason-box president-reason"><label id="label_other">Why do you support them?</label><input type="text" name="reason_other_president_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                </div>
             </div>
 
-            <div id="reason_box_ruto" class="reason-box">
-                <label id="label_ruto">Why do you support them?</label>
-                <textarea name="reason_ruto_text" placeholder="Explain your reasons..."></textarea>
+            <div class="card">
+                <span class="card-title">In your opinion who do you prefer to influence Meru Politics?</span>
+                <div class="radio">
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="kindiki" onchange="toggleReason('kindiki', 'H.E Kithure Kindiki')" required> H.E Kithure Kindiki</label>
+                        <div id="reason_box_kindiki" class="reason-box influence-reason"><label id="label_kindiki">Why do you support them?</label><input type="text" name="reason_kindiki_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="gachagua" onchange="toggleReason('gachagua_inf', 'Rigathi Gachagua')"> Rigathi Gachagua</label>
+                        <div id="reason_box_gachagua_inf" class="reason-box influence-reason"><label id="label_gachagua_inf">Why do you support them?</label><input type="text" name="reason_gachagua_inf_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="mwangaza" onchange="toggleReason('mwangaza', 'Kawira Mwangaza')"> Kawira Mwangaza</label>
+                        <div id="reason_box_mwangaza" class="reason-box influence-reason"><label id="label_mwangaza">Why do you support them?</label><input type="text" name="reason_mwangaza_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="munya" onchange="toggleReason('munya', 'Peter Munya')"> Peter Munya</label>
+                        <div id="reason_box_munya" class="reason-box influence-reason"><label id="label_munya">Why do you support them?</label><input type="text" name="reason_munya_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="kiratu" onchange="toggleReason('kiratu', 'Kiraitu Murungi')"> Kiraitu Murungi</label>
+                        <div id="reason_box_kiratu" class="reason-box influence-reason"><label id="label_kiratu">Why do you support them?</label><input type="text" name="reason_kiratu_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="mutuma" onchange="toggleReason('mutuma', 'Mutuma M\'Ethingia')"> Mutuma M'Ethingia</label>
+                        <div id="reason_box_mutuma" class="reason-box influence-reason"><label id="label_mutuma">Why do you support them?</label><input type="text" name="reason_mutuma_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="kathuri" onchange="toggleReason('kathuri', 'Kathuri Murungi')"> Kathuri Murungi</label>
+                        <div id="reason_box_kathuri" class="reason-box influence-reason"><label id="label_kathuri">Why do you support them?</label><input type="text" name="reason_kathuri_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="linturi" onchange="toggleReason('linturi', 'Mithika Linturi')"> Mithika Linturi</label>
+                        <div id="reason_box_linturi" class="reason-box influence-reason"><label id="label_linturi">Why do you support them?</label><input type="text" name="reason_linturi_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                    <div class="radio-item">
+                        <label><input type="radio" name="influence_support" value="others" onchange="toggleReason('others', 'Others')"> Others</label>
+                        <div id="other_input_others" class="reason-box influence-reason" style="display: none;">
+                            <label>Please specify the person's name:</label>
+                            <input type="text" name="other_influence_name" placeholder="Enter candidate name">
+                        </div>
+                        <div id="reason_box_others" class="reason-box influence-reason"><label id="label_others">Why do you support them?</label><input type="text" name="reason_others_influence_text" placeholder="Explain your reasons..."></div>
+                    </div>
+                </div>
             </div>
-        </div>
-
-        <div class="card">
-            <span class="card-title">In your opinion who do you prefer to influence Meru Politics?</span>
-            <div class="radio">
-                <label><input type="radio" name="influence_support" value="kindiki" onchange="toggleCandidateFields('kindiki', 'Yes')" required> H.E Kithure Kindiki</label>
-                <label><input type="radio" name="influence_support" value="gachagua" onchange="toggleCandidateFields('gachagua', 'Yes')"> Rigathi Gachagua</label>
-				<label><input type="radio" name="influence_support" value="mwangaza" onchange="toggleCandidateFields('mwangaza', 'Yes')"> Kawira Mwangaza</label>
-				<label><input type="radio" name="influence_support" value="munya" onchange="toggleCandidateFields('munya', 'Yes')"> Peter Munya</label>
-				<label><input type="radio" name="influence_support" value="kiratu" onchange="toggleCandidateFields('kiratu', 'Yes')"> Kiraitu Murungi</label>
-				<label><input type="radio" name="influence_support" value="mutuma" onchange="toggleCandidateFields('mutuma', 'Yes')"> Mutuma M'Ethingia</label>
-				<label><input type="radio" name="influence_support" value="kathuri" onchange="toggleCandidateFields('kathuri', 'Yes')"> Kathuri Murungi</label>
-				<label><input type="radio" name="influence_support" value="linturi" onchange="toggleCandidateFields('linturi', 'Yes')"> Mithika Linturi</label>
-				<label><input type="radio" name="influence_support" value="others" onchange="toggleCandidateFields('others', 'Yes')"> Others</label>
-            </div>
-
-            <div id="reason_box_kindiki" class="reason-box">
-                <label id="label_kindiki">Why do you support them?</label>
-                <textarea name="reason_kindiki_text" placeholder="Explain your reasons..."></textarea>
-            </div>
-        </div>
-		
-		
-		<div class="card">
-            <span class="card-title">In your opinion, if the next election were to be held today, who would you elect as your Member of Parliament?</span>
             
-            <div id="mp_options_container">
-                <p style="color: #666; font-style: italic;">Please select a constituency above to see the current Member of Parliament.</p>
-            </div>
-			
-			<div id="other_mp_field" class="sub-input" style="margin-top: 15px;">
-                <label>Please specify the person's name:</label>
-                <input type="text" name="other_mp_name" placeholder="Enter name of preferred candidate">
-            </div>
+            <div class="card">
+                <span class="card-title">In your opinion, if the next election were to be held today, who would you elect as your Member of Parliament?</span>
+                
+                <div id="mp_options_container">
+                    <p style="color: #666; font-style: italic;">Please select a constituency above to see the current Member of Parliament.</p>
+                </div>
+                
+                <div id="other_mp_field" class="sub-input" style="margin-top: 15px;">
+                    <label>Please specify the person's name:</label>
+                    <input type="text" name="other_mp_name" placeholder="Enter name of preferred candidate">
+                </div>
 
-            <div id="reason_box_mp" class="reason-box">
-                <label id="label_mp">Why do you support them?</label>
-                <textarea name="reason_mp_text" placeholder="Explain your reasons..."></textarea>
+                <div id="reason_box_mp" class="reason-box">
+                    <label id="label_mp">Why do you support them?</label>
+                    <input type="text" name="reason_mp_text" placeholder="Explain your reasons...">
+                </div>
             </div>
-
         </div>
 
         <h3>Party Support </h3>
         <div class="card">
             <span class="card-title">Which party do you support?</span>
-            
             
             <div class="checkbox-item">
 				<label><input type="radio" name="party_support" value="UDA" onchange="handlePartyChange('party_uda')"> UDA</label>
@@ -211,37 +270,30 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
         <h3>What key issues do you think have affected Meru Politics?</h3>
         <div class="card">
 		
-			<!--- <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Impeachment of Rigathi Gachagua" onchange="toggleSubInput('issue_0')"> High cost of living</label>
-                <div id="issue_0_input" class="sub-input">
-                    
-                </div>
-            </div> --->
-			
 			<div class="checkbox-item">
                 <label><input type="checkbox" name="key_issues" value="Impeachment of Rigathi Gachagua" onchange="toggleSubInput('issue_1')"> Impeachment of Rigathi Gachagua</label>
-                <div id="issue_0_input" class="sub-input">
+                <div id="issue_1_input" class="sub-input">
                     
                 </div>
             </div>
 			
 			<div class="checkbox-item">
                 <label><input type="checkbox" name="key_issues" value="Impeachment of Kawira Mwangaza" onchange="toggleSubInput('issue_2')"> Impeachment of Kawira Mwangaza</label>
-                <div id="issue_0_input" class="sub-input">
+                <div id="issue_2_input" class="sub-input">
                     
                 </div>
             </div>
 			
 			<div class="checkbox-item">
                 <label><input type="checkbox" name="key_issues" value="Sacking of Mithika Linturi" onchange="toggleSubInput('issue_3')"> Sacking of Mithika Linturi</label>
-                <div id="issue_0_input" class="sub-input">
+                <div id="issue_3_input" class="sub-input">
                     
                 </div>
             </div>
 			
 			<div class="checkbox-item">
                 <label><input type="checkbox" name="key_issues" value="Cattle Rustling" onchange="toggleSubInput('issue_4')"> Cattle Rustling</label>
-                <div id="issue_0_input" class="sub-input">
+                <div id="issue_4_input" class="sub-input">
                     
                 </div>
             </div>
@@ -249,7 +301,7 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             
             <div class="checkbox-item">
                 <label><input type="checkbox" name="key_issues" value="Land Dispute" onchange="toggleSubInput('issue_5')"> Land Dispute</label>
-                <div id="issue_0_input" class="sub-input">
+                <div id="issue_5_input" class="sub-input">
                     
                 </div>
             </div>
@@ -258,77 +310,77 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
 			
 			<div class="checkbox-item">
                 <label><input type="checkbox" name="key_issues" value="High cost of living" onchange="toggleSubInput('issue_6')"> High cost of living</label>
-                <div id="issue_0_input" class="sub-input">
-                    
-                </div>
-            </div>
-            
-            <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Unemployment" onchange="toggleSubInput('issue_7')"> Unemployment</label>
-                <div id="issue_1_input" class="sub-input">
-                    
-                </div>
-            </div>
-            
-            <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Taxes" onchange="toggleSubInput('issue_8')"> Taxes</label>
-                <div id="issue_2_input" class="sub-input">
-                    
-                </div>
-            </div>
-            
-            <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Agriculture (coffee/miraa/markets)" onchange="toggleSubInput('issue_9')"> Agriculture (coffee/miraa/markets)</label>
-                <div id="issue_3_input" class="sub-input">
-                    
-                </div>
-            </div>
-            
-            <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Corruption" onchange="toggleSubInput('issue_10')"> Corruption</label>
-                <div id="issue_4_input" class="sub-input">
-                    
-                </div>
-            </div>
-            
-            <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Health/SHIF" onchange="toggleSubInput('issue_11')"> Health/SHIF</label>
-                <div id="issue_5_input" class="sub-input">
-                    
-                </div>
-            </div>
-            
-            <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Education/HELB" onchange="toggleSubInput('issue_12')"> Education/HELB</label>
                 <div id="issue_6_input" class="sub-input">
                     
                 </div>
             </div>
             
             <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Roads & infrastructure" onchange="toggleSubInput('issue_13')"> Roads & infrastructure</label>
+                <label><input type="checkbox" name="key_issues" value="Unemployment" onchange="toggleSubInput('issue_7')"> Unemployment</label>
                 <div id="issue_7_input" class="sub-input">
                     
                 </div>
             </div>
             
             <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Water shortages" onchange="toggleSubInput('issue_14')"> Water shortages</label>
+                <label><input type="checkbox" name="key_issues" value="Taxes" onchange="toggleSubInput('issue_8')"> Taxes</label>
                 <div id="issue_8_input" class="sub-input">
                     
                 </div>
             </div>
             
             <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Insecurity" onchange="toggleSubInput('issue_15')"> Insecurity</label>
+                <label><input type="checkbox" name="key_issues" value="Agriculture (coffee/miraa/markets)" onchange="toggleSubInput('issue_9')"> Agriculture (coffee/miraa/markets)</label>
                 <div id="issue_9_input" class="sub-input">
                     
                 </div>
             </div>
             
             <div class="checkbox-item">
-                <label><input type="checkbox" name="key_issues" value="Political divisions in Mt. Kenya" onchange="toggleSubInput('issue_16')"> Political divisions in Mt. Kenya</label>
+                <label><input type="checkbox" name="key_issues" value="Corruption" onchange="toggleSubInput('issue_10')"> Corruption</label>
                 <div id="issue_10_input" class="sub-input">
+                    
+                </div>
+            </div>
+            
+            <div class="checkbox-item">
+                <label><input type="checkbox" name="key_issues" value="Health/SHIF" onchange="toggleSubInput('issue_11')"> Health/SHIF</label>
+                <div id="issue_11_input" class="sub-input">
+                    
+                </div>
+            </div>
+            
+            <div class="checkbox-item">
+                <label><input type="checkbox" name="key_issues" value="Education/HELB" onchange="toggleSubInput('issue_12')"> Education/HELB</label>
+                <div id="issue_12_input" class="sub-input">
+                    
+                </div>
+            </div>
+            
+            <div class="checkbox-item">
+                <label><input type="checkbox" name="key_issues" value="Roads & infrastructure" onchange="toggleSubInput('issue_13')"> Roads & infrastructure</label>
+                <div id="issue_13_input" class="sub-input">
+                    
+                </div>
+            </div>
+            
+            <div class="checkbox-item">
+                <label><input type="checkbox" name="key_issues" value="Water shortages" onchange="toggleSubInput('issue_14')"> Water shortages</label>
+                <div id="issue_14_input" class="sub-input">
+                    
+                </div>
+            </div>
+            
+            <div class="checkbox-item">
+                <label><input type="checkbox" name="key_issues" value="Insecurity" onchange="toggleSubInput('issue_15')"> Insecurity</label>
+                <div id="issue_15_input" class="sub-input">
+                    
+                </div>
+            </div>
+            
+            <div class="checkbox-item">
+                <label><input type="checkbox" name="key_issues" value="Political divisions in Mt. Kenya" onchange="toggleSubInput('issue_16')"> Political divisions in Mt. Kenya</label>
+                <div id="issue_16_input" class="sub-input">
                     
                 </div>
             </div>
@@ -376,11 +428,24 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
         };
 
         function toggleCandidateFields(candidate, value) {
+            // Hide all other inline candidate reason fields 
+            document.querySelectorAll('.president-reason').forEach(el => el.style.display = 'none');
+            
             const reasonBox = document.getElementById(`reason_box_${candidate}`);
             const label = document.getElementById(`label_${candidate}`);
+            const otherInput = document.getElementById(`other_input_president`);
             
             // Show the box as soon as a selection is made
-            reasonBox.style.display = 'block';
+            if(reasonBox) {
+                reasonBox.style.display = 'block';
+            }
+
+            // Handle "Other" candidate input field
+            if (candidate === 'other') {
+                if (otherInput) otherInput.style.display = 'block';
+            } else {
+                if (otherInput) otherInput.style.display = 'none';
+            }
 
             // Map of specific display names for labels
 			const names = {
@@ -398,11 +463,39 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
 				'kiratu': 'Kiraitu Murungi',
 				'mutuma': "Mutuma M'Ethingia",
 				'kathuri': 'Kathuri Murungi',
-				'linturi': 'Mithika Linturi'
+				'linturi': 'Mithika Linturi',
+                'other': 'this candidate'
 			};
 
 			const displayName = names[candidate] || "this candidate";
-			label.innerText = `Why do you support ${displayName}?`;
+			if(label) label.innerText = `Why do you support ${displayName}?`;
+		}
+		
+		function toggleReason(section, displayName) {
+            // Hide all other inline influence reason fields
+            document.querySelectorAll('.influence-reason').forEach(el => el.style.display = 'none');
+
+			const reasonBox = document.getElementById(`reason_box_${section}`);
+			const label = document.getElementById(`label_${section}`);
+			const otherInputDiv = document.getElementById(`other_input_${section}`);
+			
+			// Show the box
+			if(reasonBox) {
+                reasonBox.style.display = 'block';
+            }
+			
+			// Update the label text
+			if(label) {
+                const finalDisplayName = (displayName === 'Other' || displayName === 'Others') ? 'this candidate' : displayName;
+                label.innerText = `Why do you support ${finalDisplayName}?`;
+            }
+			
+			// Handle "Other" text field visibility
+			if (displayName === 'Other' || displayName === 'Others') {
+				if (otherInputDiv) otherInputDiv.style.display = 'block';
+			} else {
+				if (otherInputDiv) otherInputDiv.style.display = 'none';
+			}
 		}
 
         function toggleSubInput(id) {
@@ -457,17 +550,18 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             const reasonBox = document.getElementById("reason_box_mp");
             const label = document.getElementById("label_mp");
             const otherField = document.getElementById("other_mp_field");
+            const otherInputEl = document.querySelector('input[name="other_mp_name"]');
 
             reasonBox.style.display = 'block';
             
             if (type === 'current') {
                 label.innerText = `Why do you support ${name}?`;
                 otherField.style.display = 'none';
-				otherInput.required = false;
+				if(otherInputEl) otherInputEl.required = false;
             } else {
                 label.innerText = "Why do you support this candidate?";
                 otherField.style.display = 'block';
-				otherInput.required = true;
+				if(otherInputEl) otherInputEl.required = true;
             }
         }
 
