@@ -1,0 +1,3 @@
+*.json
+/pdf-to-excel-convert
+*.code-workspace
