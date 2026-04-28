@@ -55,7 +55,7 @@
 
 Your feedback is essential in ensuring that party decisions are guided by the actual needs and sentiments of the Meru electorate. All responses are strictly <b>confidential</b>.</p>
     
-    <form id="surveyForm" action="https://script.google.com/macros/s/AKfycby3Sz8bIN146Ba_BuUyfu_miCAvsb48SA6c62ePIo6RNpPSo77ppb2JzE2sbUbHsB-O/exec" method="POST">
+    <form id="surveyForm" method="POST">
         <h3>Location Information</h3>
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required>
@@ -595,16 +595,22 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             btn.innerText = "Sending Data...";
 
             const formData = new FormData(this);
-            fetch(this.action, {
+            
+            // Point to your Netlify function instead of the Google URL
+            fetch("/.netlify/functions/submit-survey", {
                 method: "POST",
                 body: new URLSearchParams(formData)
             })
             .then(res => {
-                alert("Survey successfully submitted!");
-                location.reload();
+                if (res.ok) {
+                    alert("Survey successfully submitted!");
+                    location.reload();
+                } else {
+                    throw new Error("Server error");
+                }
             })
             .catch(err => {
-                alert("Error sending survey.");
+                alert("Error sending survey. Please try again.");
                 btn.disabled = false;
                 btn.innerText = "Submit Survey";
             });
