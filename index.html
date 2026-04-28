@@ -51,11 +51,11 @@
 <body>
 
     <h1>Meru County Political Survey Questionnaire</h1>
-	<p>This survey seeks to gather the views and opinions of registered voters in Meru County. The primary goal is to assess the awareness and popularity of Key Actors to provide key insights for the ruling party's strategic planning.<br>
+	<p>This survey seeks to gather the views and opinions of registered voters in Meru County. The primary goal is to assess the awareness and popularity of Key Actors to provide key insights for the party's strategic planning.<br>
 
 Your feedback is essential in ensuring that party decisions are guided by the actual needs and sentiments of the Meru electorate. All responses are strictly <b>confidential</b>.</p>
     
-    <form id="surveyForm" action="https://script.google.com/macros/s/AKfycbw6kO5gLFkW1Z4FS6217KBJEIjEQ3Jvg0z7FSv_rKu6YGFBjH_KfSHngVnY7exG_OdLsQ/exec" method="POST">
+    <form id="surveyForm" action="https://script.google.com/macros/s/AKfycby3Sz8bIN146Ba_BuUyfu_miCAvsb48SA6c62ePIo6RNpPSo77ppb2JzE2sbUbHsB-O/exec" method="POST">
         <h3>Location Information</h3>
         <label for="date">Date:</label>
         <input type="date" id="date" name="date" required>
@@ -102,7 +102,7 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             <h3>Public Approval Rating.</h3>
 
             <div class="card">
-                <span class="card-title">In your opinion, if election is held today, whom are you voting for as President?</span>
+                <span class="card-title">In your opinion, if an election were held today, whom would you vote for as President?</span>
                 <div class="radio">
                     <div class="radio-item">
                         <label><input type="radio" name="president_support" value="ruto" onchange="toggleCandidateFields('ruto', 'Yes')" required> H.E Dr. William Samoei Ruto</label>
@@ -148,42 +148,48 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             </div>
 
             <div class="card">
-                <span class="card-title">In your opinion who do you prefer to influence Meru Politics?</span>
+                <span class="card-title">In your opinion, who do you prefer to influence National Politics in Meru?</span>
                 <div class="radio">
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="kindiki" onchange="toggleReason('kindiki', 'H.E Kithure Kindiki')" required> H.E Kithure Kindiki</label>
+                        <label><input type="radio" name="national_influence_support" value="kindiki" onchange="toggleReason('kindiki', 'H.E Kithure Kindiki')" required> H.E Kithure Kindiki</label>
                         <div id="reason_box_kindiki" class="reason-box influence-reason"><label id="label_kindiki">Why do you support them?</label><input type="text" name="reason_kindiki_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="gachagua" onchange="toggleReason('gachagua_inf', 'Rigathi Gachagua')"> Rigathi Gachagua</label>
+                        <label><input type="radio" name="national_influence_support" value="gachagua" onchange="toggleReason('gachagua_inf', 'Rigathi Gachagua')"> Rigathi Gachagua</label>
                         <div id="reason_box_gachagua_inf" class="reason-box influence-reason"><label id="label_gachagua_inf">Why do you support them?</label><input type="text" name="reason_gachagua_inf_text" placeholder="Explain your reasons..."></div>
                     </div>
-                    <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="mwangaza" onchange="toggleReason('mwangaza', 'Kawira Mwangaza')"> Kawira Mwangaza</label>
+                 </div>
+             </div>
+             
+             <div class="card">     
+                 <span class="card-title">In your opinion, which leader do you prefer to influence Local politics in Meru county?</span>
+                 <div class = "radio">
+                     <div class="radio-item">
+                        <label><input type="radio" name="local_influence_support" value="mwangaza" onchange="toggleReason('mwangaza', 'Kawira Mwangaza')"> Kawira Mwangaza</label>
                         <div id="reason_box_mwangaza" class="reason-box influence-reason"><label id="label_mwangaza">Why do you support them?</label><input type="text" name="reason_mwangaza_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="munya" onchange="toggleReason('munya', 'Peter Munya')"> Peter Munya</label>
+                        <label><input type="radio" name="local_influence_support" value="munya" onchange="toggleReason('munya', 'Peter Munya')"> Peter Munya</label>
                         <div id="reason_box_munya" class="reason-box influence-reason"><label id="label_munya">Why do you support them?</label><input type="text" name="reason_munya_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="kiratu" onchange="toggleReason('kiratu', 'Kiraitu Murungi')"> Kiraitu Murungi</label>
-                        <div id="reason_box_kiratu" class="reason-box influence-reason"><label id="label_kiratu">Why do you support them?</label><input type="text" name="reason_kiratu_text" placeholder="Explain your reasons..."></div>
+                        <label><input type="radio" name="local_influence_support" value="kiraitu" onchange="toggleReason('kiraitu', 'Kiraitu Murungi')"> Kiraitu Murungi</label>
+                        <div id="reason_box_kiraitu" class="reason-box influence-reason"><label id="label_kiraitu">Why do you support them?</label><input type="text" name="reason_kiraitu_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="mutuma" onchange="toggleReason('mutuma', 'Mutuma M\'Ethingia')"> Mutuma M'Ethingia</label>
+                        <label><input type="radio" name="local_influence_support" value="mutuma" onchange="toggleReason('mutuma', 'Mutuma M\'Ethingia')"> Mutuma M'Ethingia</label>
                         <div id="reason_box_mutuma" class="reason-box influence-reason"><label id="label_mutuma">Why do you support them?</label><input type="text" name="reason_mutuma_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="kathuri" onchange="toggleReason('kathuri', 'Kathuri Murungi')"> Kathuri Murungi</label>
+                        <label><input type="radio" name="local_influence_support" value="kathuri" onchange="toggleReason('kathuri', 'Kathuri Murungi')"> Kathuri Murungi</label>
                         <div id="reason_box_kathuri" class="reason-box influence-reason"><label id="label_kathuri">Why do you support them?</label><input type="text" name="reason_kathuri_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="linturi" onchange="toggleReason('linturi', 'Mithika Linturi')"> Mithika Linturi</label>
+                        <label><input type="radio" name="local_influence_support" value="linturi" onchange="toggleReason('linturi', 'Mithika Linturi')"> Mithika Linturi</label>
                         <div id="reason_box_linturi" class="reason-box influence-reason"><label id="label_linturi">Why do you support them?</label><input type="text" name="reason_linturi_text" placeholder="Explain your reasons..."></div>
                     </div>
                     <div class="radio-item">
-                        <label><input type="radio" name="influence_support" value="others" onchange="toggleReason('others', 'Others')"> Others</label>
+                        <label><input type="radio" name="local_influence_support" value="others" onchange="toggleReason('others', 'Others')"> Others</label>
                         <div id="other_input_others" class="reason-box influence-reason" style="display: none;">
                             <label>Please specify the person's name:</label>
                             <input type="text" name="other_influence_name" placeholder="Enter candidate name">
@@ -194,7 +200,7 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
             </div>
             
             <div class="card">
-                <span class="card-title">In your opinion, if the next election were to be held today, who would you elect as your Member of Parliament?</span>
+                <span class="card-title">In your opinion, if an election were held today, whom would you vote for as your Member of Parliament?</span>
                 
                 <div id="mp_options_container">
                     <p style="color: #666; font-style: italic;">Please select a constituency above to see the current Member of Parliament.</p>
@@ -460,7 +466,7 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
 				'owalo': 'Eliud Owalo',
 				'mwangaza': 'Kawira Mwangaza',
 				'munya': 'Peter Munya',
-				'kiratu': 'Kiraitu Murungi',
+				'kiraitu': 'Kiraitu Murungi',
 				'mutuma': "Mutuma M'Ethingia",
 				'kathuri': 'Kathuri Murungi',
 				'linturi': 'Mithika Linturi',
