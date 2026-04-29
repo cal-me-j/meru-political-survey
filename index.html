@@ -160,6 +160,24 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
                     </div>
                  </div>
              </div>
+
+             <div class="card">
+				<span class="card-title">In your opinion, does the Mt. Kenya East vs Mt. Kenya West influence Meru politics?</span>
+				
+				<div class="radio-flex" style="margin-top: 15px;">
+					<label class="radio-label">
+						<input type="radio" name="mt_kenya_influence" value="Yes" onchange="toggleBooleanReason('mt_kenya', 'Yes')" required> Yes
+					</label>
+					<label class="radio-label">
+						<input type="radio" name="mt_kenya_influence" value="No" onchange="toggleBooleanReason('mt_kenya', 'No')"> No
+					</label>
+				</div>
+
+				<div id="reason_box_mt_kenya" class="reason-box">
+					<label id="label_mt_kenya">Please explain your answer:</label>
+					<textarea name="reason_mt_kenya_text" placeholder="Explain why you feel this way..."></textarea>
+				</div>
+			</div>
              
              <div class="card">     
                  <span class="card-title">In your opinion, which leader do you prefer to influence Local politics in Meru county?</span>
@@ -579,6 +597,20 @@ Your feedback is essential in ensuring that party decisions are guided by the ac
         }
 
         // Add updateMPChoices() to your existing onchange event in the HTML select for constituency
+
+        function toggleBooleanReason(id, value) {
+            const reasonBox = document.getElementById(`reason_box_${id}`);
+            const label = document.getElementById(`label_${id}`);
+            
+            // // Show the explanation box regardless of Yes or No
+            // reasonBox.style.display = 'block';
+            
+            // if (value === 'Yes') {
+            //     label.innerText = "In what way does this influence Meru politics?";
+            // } else {
+            //     label.innerText = "Why do you feel it has no influence?";
+            // }
+        }
 
         function updatePollingStations() {
             const cs = document.getElementById("constituency");
