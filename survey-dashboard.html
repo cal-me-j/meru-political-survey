@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Meru Survey Dashboard</title>
+<style>
+  :root {
+    --bg: #f5f4f0;
+    --surface: #ffffff;
+    --surface2: #f0efe9;
+    --border: #e0ddd6;
+    --border2: #ccc9c0;
+    --text: #1a1a18;
+    --text2: #5a5a54;
+    --text3: #9a9a90;
+    --accent: #1a4d8f;
+    --accent-bg: #e8f0fb;
+    --accent-text: #0d3670;
+    --danger: #b03030;
+    --bar: #c8d8f0;
+    --bar-active: #1a4d8f;
+    --tag-bg: #e8f0fb;
+    --tag-text: #0d3670;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Georgia', serif;
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  header {
+    background: var(--accent);
+    color: #fff;
+    padding: 18px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 3px solid #0d3670;
+  }
+
+  header h1 { font-size: 17px; font-weight: normal; letter-spacing: 0.02em; }
+  header span { font-size: 12px; opacity: 0.7; font-family: monospace; }
+
+  #config-panel {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 16px 32px;
+    display: flex;
+    align-items: flex-end;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  .config-group { display: flex; flex-direction: column; gap: 4px; flex: 1; min-width: 200px; }
+  .config-group label { font-size: 11px; color: var(--text2); letter-spacing: 0.05em; text-transform: uppercase; }
+  .config-group input {
+    padding: 8px 10px;
+    border: 1px solid var(--border2);
+    border-radius: 4px;
+    font-size: 13px;
+    font-family: monospace;
+    background: var(--surface);
+    color: var(--text);
+    width: 100%;
+  }
+  .config-group input:focus { outline: 2px solid var(--accent); border-color: transparent; }
+
+  button {
+    padding: 9px 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    cursor: pointer;
+    white-space: nowrap;
+    align-self: flex-end;
+    font-family: inherit;
+  }
+  button:hover { background: #0d3670; }
+  button:disabled { background: var(--border2); cursor: default; }
+  button.secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 1px solid var(--border2);
+  }
+  button.secondary:hover { background: var(--accent-bg); }
+  button.danger { background: transparent; color: var(--danger); border: 1px solid #f0c0c0; font-size: 12px; padding: 6px 12px; }
+  button.danger:hover { background: #fff0f0; }
+
+  #status-bar {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    min-height: 44px;
+  }
+
+  #status-bar .count { font-size: 14px; }
+  #status-bar .count strong { font-size: 18px; color: var(--accent); }
+  #status-bar .count .total { color: var(--text2); }
+
+  #active-filters { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+  .filter-tag {
+    background: var(--tag-bg);
+    color: var(--tag-text);
+    border: 1px solid #b8cef0;
+    border-radius: 3px;
+    padding: 2px 8px 2px 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    max-width: 200px;
+  }
+  .filter-tag span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .filter-tag .remove { cursor: pointer; font-size: 14px; line-height: 1; color: var(--accent); flex-shrink: 0; }
+  .filter-tag .remove:hover { color: var(--danger); }
+
+  #main { display: flex; gap: 0; }
+
+  #sidebar {
+    width: 280px;
+    min-width: 260px;
+    flex-shrink: 0;
+    padding: 20px 16px;
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    min-height: calc(100vh - 120px);
+  }
+
+  #content {
+    flex: 1;
+    padding: 20px 24px;
+    overflow: hidden;
+  }
+
+  .sidebar-section { margin-bottom: 6px; }
+
+  .panel {
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 8px;
+    background: var(--surface);
+  }
+
+  .panel-header {
+    padding: 8px 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    user-select: none;
+  }
+  .panel-header:hover { background: #e8e7e0; }
+  .panel-header .col-name { font-size: 12px; font-weight: bold; color: var(--text); letter-spacing: 0.02em; }
+  .panel-header .badge {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 3px;
+    font-size: 10px;
+    padding: 1px 6px;
+    margin-left: 5px;
+  }
+  .panel-header .arrow { font-size: 10px; color: var(--text3); }
+
+  .panel-body { padding: 8px; }
+  .panel-search { width: 100%; padding: 5px 8px; border: 1px solid var(--border); border-radius: 3px; font-size: 12px; margin-bottom: 6px; color: var(--text); background: var(--surface); }
+  .panel-search:focus { outline: 1px solid var(--accent); }
+
+  .panel-items { max-height: 200px; overflow-y: auto; }
+
+  .filter-item {
+    padding: 4px 6px;
+    border-radius: 3px;
+    cursor: pointer;
+    margin-bottom: 2px;
+    border: 1px solid transparent;
+  }
+  .filter-item:hover { background: var(--surface2); }
+  .filter-item.active { background: var(--accent-bg); border-color: #b8cef0; }
+
+  .filter-item-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+  .filter-item-label { font-size: 12px; color: var(--text); flex: 1; margin-right: 6px; word-break: break-word; }
+  .filter-item.active .filter-item-label { color: var(--accent-text); }
+  .filter-item-count { font-size: 11px; color: var(--text2); flex-shrink: 0; font-family: monospace; }
+  .filter-item.active .filter-item-count { color: var(--accent); font-weight: bold; }
+
+  .bar-track { height: 3px; background: var(--bar); border-radius: 2px; }
+  .bar-fill { height: 3px; background: var(--bar-active); border-radius: 2px; transition: width 0.15s; }
+  .filter-item.active .bar-fill { background: var(--accent); }
+
+  .panel-more { font-size: 11px; color: var(--text3); padding: 4px 6px; cursor: pointer; }
+  .panel-more:hover { color: var(--accent); }
+
+  #content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+  }
+
+  .summary-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 14px 16px;
+  }
+  .summary-card h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text2); margin-bottom: 10px; font-weight: normal; border-bottom: 1px solid var(--border); padding-bottom: 6px; }
+
+  .summary-row { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; }
+  .summary-label { font-size: 12px; color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .summary-count { font-size: 12px; color: var(--text2); font-family: monospace; min-width: 40px; text-align: right; flex-shrink: 0; }
+  .summary-pct { font-size: 11px; color: var(--text3); min-width: 36px; text-align: right; flex-shrink: 0; }
+  .summary-bar-track { flex: 1; height: 4px; background: var(--bar); border-radius: 2px; min-width: 40px; }
+  .summary-bar-fill { height: 4px; background: var(--bar-active); border-radius: 2px; }
+
+  .other-detail { margin-top: 10px; padding-top: 8px; border-top: 1px dashed var(--border); }
+  .other-detail h4 { font-size: 11px; color: var(--text2); margin-bottom: 6px; font-weight: normal; }
+  .other-item { font-size: 11px; color: var(--text2); padding: 2px 0; display: flex; justify-content: space-between; }
+  .other-item span:last-child { color: var(--text3); font-family: monospace; }
+
+  #loading { padding: 60px; text-align: center; color: var(--text2); }
+  #loading .spinner { width: 28px; height: 28px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.7s linear infinite; margin: 0 auto 12px; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  #error-msg { padding: 20px 32px; background: #fff0f0; border: 1px solid #f0c0c0; color: var(--danger); border-radius: 4px; margin: 20px; font-size: 13px; }
+
+  .instructions {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 20px 24px;
+    max-width: 600px;
+    margin: 40px auto;
+  }
+  .instructions h2 { font-size: 15px; margin-bottom: 12px; color: var(--accent); }
+  .instructions ol { padding-left: 18px; }
+  .instructions li { margin-bottom: 8px; font-size: 13px; color: var(--text2); }
+  .instructions code { background: var(--surface2); padding: 1px 5px; border-radius: 3px; font-family: monospace; font-size: 12px; color: var(--text); word-break: break-all; }
+
+  .toolbar { display: flex; gap: 8px; align-items: center; }
+  .section-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text3); margin-bottom: 8px; padding: 0 2px; }
+
+  #paste-area {
+    width: 100%; height: 90px; padding: 10px; font-family: monospace; font-size: 12px;
+    border: 1px dashed var(--border2); border-radius: 4px; background: var(--surface2);
+    color: var(--text); resize: vertical;
+  }
+  #paste-area:focus { outline: 1px solid var(--accent); }
+
+  .paste-fallback { margin-top: 12px; }
+  .paste-fallback summary { font-size: 12px; color: var(--text2); cursor: pointer; }
+  .paste-fallback summary:hover { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Meru County Political Survey &mdash; Data Explorer</h1>
+  <span id="header-info">No data loaded</span>
+</header>
+
+<div id="config-panel">
+  <div class="config-group">
+    <label>Google Sheet ID</label>
+    <input type="text" id="sheet-id" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
+  </div>
+  <div class="config-group">
+    <label>Sheet / Tab GID (0 = first sheet)</label>
+    <input type="text" id="sheet-gid" value="0" style="max-width:140px;" />
+  </div>
+  <button id="btn-load" onclick="loadFromSheets()">Load from Google Sheets</button>
+  <details class="paste-fallback">
+    <summary>Or paste CSV data manually</summary>
+    <div style="margin-top:8px;display:flex;gap:8px;align-items:flex-end;">
+      <textarea id="paste-area" placeholder="Paste tab-separated or CSV data from Google Sheets here..."></textarea>
+      <button onclick="loadFromPaste()" class="secondary">Load</button>
+    </div>
+  </details>
+</div>
+
+<div id="status-bar" style="display:none;">
+  <div class="count">
+    Showing <strong id="filtered-count">0</strong>
+    <span class="total"> of <span id="total-count">0</span> entries</span>
+  </div>
+  <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+    <div id="active-filters"></div>
+    <button class="danger" id="btn-clear" onclick="clearAllFilters()" style="display:none;">Clear all filters</button>
+    <button class="secondary" onclick="downloadCSV()" style="font-size:12px;padding:5px 12px;">Export filtered CSV</button>
+  </div>
+</div>
+
+<div id="app">
+  <div class="instructions">
+    <h2>Getting started</h2>
+    <ol>
+      <li>Make your Google Sheet accessible: <strong>Share &rarr; Anyone with the link can view</strong></li>
+      <li>Copy the Sheet ID from the URL:<br>
+        <code>docs.google.com/spreadsheets/d/<strong>[SHEET-ID]</strong>/edit</code>
+      </li>
+      <li>Paste the ID above and click <strong>Load from Google Sheets</strong></li>
+      <li>If your data is on a non-first tab, find the GID in the URL after <code>#gid=</code></li>
+    </ol>
+  </div>
+</div>
+
+<script>
+const FILTER_COLS = [
+  "Constituency","Ward","Gender","Age Group","Meru Sub-Tribe",
+  "Preferred President","National Influencer","Mt Kenya Influence",
+  "Local Influencer","Preferred MP","Supported Party"
+];
+
+const MULTI_COLS = ["Key Issues"];
+
+const OTHER_DETAIL_MAP = {
+  "Preferred President": "Other Issue Details",
+  "Local Influencer": "Other Issue Details",
+  "Preferred MP": "Other Issue Details",
+  "Supported Party": "Other Issue Details"
+};
+
+let allRows = [];
+let headers = [];
+let filters = {};
+let panelState = {};
+let searchState = {};
+
+function parseCSV(text) {
+  const lines = text.trim().split(/\r?\n/);
+  if (lines.length < 2) return null;
+  const sep = (lines[0].match(/\t/g) || []).length > (lines[0].match(/,/g) || []).length ? '\t' : ',';
+  const hdrs = lines[0].split(sep).map(h => h.replace(/^"|"$/g,'').trim());
+  const rows = lines.slice(1).map(line => {
+    const cells = sep === '\t' ? line.split('\t') : parseCSVLine(line);
+    const obj = {};
+    hdrs.forEach((h,i) => { obj[h] = (cells[i]||'').replace(/^"|"$/g,'').trim(); });
+    return obj;
+  }).filter(r => Object.values(r).some(v => v));
+  return { hdrs, rows };
+}
+
+function parseCSVLine(line) {
+  const result = []; let cur = ''; let inQ = false;
+  for (let i = 0; i < line.length; i++) {
+    const c = line[i];
+    if (c === '"') { inQ = !inQ; }
+    else if (c === ',' && !inQ) { result.push(cur); cur = ''; }
+    else { cur += c; }
+  }
+  result.push(cur);
+  return result;
+}
+
+async function loadFromSheets() {
+  const id = document.getElementById('sheet-id').value.trim();
+  const gid = document.getElementById('sheet-gid').value.trim() || '0';
+  if (!id) { showError('Please enter a Google Sheet ID.'); return; }
+  const url = `https://docs.google.com/spreadsheets/d/${id}/export?format=csv&gid=${gid}`;
+  showLoading();
+  try {
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`HTTP ${res.status} — make sure the sheet is set to "Anyone with the link can view"`);
+    const text = await res.text();
+    processData(text, `Sheet ID: ${id.slice(0,12)}...`);
+  } catch(e) {
+    showError(`Could not load sheet: ${e.message}`);
+  }
+}
+
+function loadFromPaste() {
+  const text = document.getElementById('paste-area').value.trim();
+  if (!text) return;
+  processData(text, 'Pasted data');
+}
+
+function processData(text, source) {
+  const parsed = parseCSV(text);
+  if (!parsed || parsed.rows.length === 0) { showError('Could not parse data. Make sure your sheet has headers in the first row.'); return; }
+  headers = parsed.hdrs;
+  allRows = parsed.rows;
+  filters = {};
+  panelState = {};
+  searchState = {};
+  document.getElementById('header-info').textContent = `${allRows.length.toLocaleString()} entries · ${source}`;
+  renderApp();
+}
+
+function getFilteredRows() {
+  return allRows.filter(row => {
+    return Object.entries(filters).every(([col, vals]) => {
+      if (!vals || vals.length === 0) return true;
+      if (MULTI_COLS.includes(col)) {
+        const cellVals = (row[col]||'').split(',').map(v=>v.trim()).filter(Boolean);
+        return vals.some(v => cellVals.includes(v));
+      }
+      return vals.includes(row[col]||'');
+    });
+  });
+}
+
+function getCounts(rows, col) {
+  const isMulti = MULTI_COLS.includes(col);
+  const counts = {};
+  rows.forEach(r => {
+    const val = r[col]||'';
+    if (isMulti) {
+      val.split(',').map(v=>v.trim()).filter(Boolean).forEach(v => { counts[v]=(counts[v]||0)+1; });
+    } else {
+      if (val) counts[val] = (counts[val]||0)+1;
+    }
+  });
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+}
+
+function toggleFilter(col, val) {
+  if (!filters[col]) filters[col] = [];
+  const idx = filters[col].indexOf(val);
+  if (idx > -1) filters[col].splice(idx,1);
+  else filters[col].push(val);
+  if (filters[col].length === 0) delete filters[col];
+  renderApp();
+}
+
+function clearAllFilters() { filters = {}; renderApp(); }
+function removeFilter(col, val) {
+  if (!filters[col]) return;
+  filters[col] = filters[col].filter(v=>v!==val);
+  if (filters[col].length===0) delete filters[col];
+  renderApp();
+}
+
+function togglePanel(col) { panelState[col] = !panelState[col]; renderApp(); }
+
+function renderApp() {
+  const filtered = getFilteredRows();
+  const totalFilters = Object.values(filters).flat().length;
+
+  document.getElementById('status-bar').style.display = '';
+  document.getElementById('filtered-count').textContent = filtered.length.toLocaleString();
+  document.getElementById('total-count').textContent = allRows.length.toLocaleString();
+  document.getElementById('btn-clear').style.display = totalFilters > 0 ? '' : 'none';
+
+  const af = document.getElementById('active-filters');
+  af.innerHTML = '';
+  Object.entries(filters).forEach(([col, vals]) => {
+    vals.forEach(val => {
+      const tag = document.createElement('div');
+      tag.className = 'filter-tag';
+      tag.innerHTML = `<span title="${col}: ${val}">${col.split(' ')[0]}: ${val}</span><span class="remove" onclick="removeFilter('${col.replace(/'/g,"\\'")}','${val.replace(/'/g,"\\'")}')">×</span>`;
+      af.appendChild(tag);
+    });
+  });
+
+  const app = document.getElementById('app');
+  app.innerHTML = '';
+
+  const main = document.createElement('div');
+  main.id = 'main';
+
+  // --- SIDEBAR ---
+  const sidebar = document.createElement('div');
+  sidebar.id = 'sidebar';
+  sidebar.innerHTML = '<div class="section-label">Filter by</div>';
+
+  const allCols = [...FILTER_COLS, ...MULTI_COLS].filter(c => headers.includes(c));
+
+  allCols.forEach(col => {
+    const isOpen = panelState[col] !== false;
+    const counts = getCounts(filtered, col);
+    const selected = filters[col] || [];
+    const search = searchState[col] || '';
+
+    const panel = document.createElement('div');
+    panel.className = 'panel';
+
+    const selCount = selected.length;
+    panel.innerHTML = `
+      <div class="panel-header" onclick="togglePanel('${col}')">
+        <span class="col-name">${col}${selCount>0?`<span class="badge">${selCount}</span>`:''}</span>
+        <span class="arrow">${isOpen?'▲':'▼'}</span>
+      </div>`;
+
+    if (isOpen) {
+      const body = document.createElement('div');
+      body.className = 'panel-body';
+
+      const displayCounts = search ? counts.filter(([v])=>v.toLowerCase().includes(search.toLowerCase())) : counts;
+      const SHOW_N = 8;
+      const showAll = panelState[col+'_showAll'];
+      const visible = showAll ? displayCounts : displayCounts.slice(0, SHOW_N);
+      const max = counts[0]?.[1] || 1;
+
+      if (counts.length > 5) {
+        body.innerHTML = `<input class="panel-search" placeholder="Search ${col.toLowerCase()}..." value="${search}" oninput="searchState['${col}']=this.value;renderApp()" />`;
+      }
+
+      const items = document.createElement('div');
+      items.className = 'panel-items';
+      visible.forEach(([val, count]) => {
+        const isActive = selected.includes(val);
+        const pct = Math.round((count/max)*100);
+        const item = document.createElement('div');
+        item.className = 'filter-item' + (isActive?' active':'');
+        item.onclick = () => toggleFilter(col, val);
+        item.innerHTML = `
+          <div class="filter-item-row">
+            <span class="filter-item-label" title="${val}">${val}</span>
+            <span class="filter-item-count">${count.toLocaleString()}</span>
+          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:${pct}%"></div></div>`;
+        items.appendChild(item);
+      });
+      body.appendChild(items);
+
+      if (!showAll && displayCounts.length > SHOW_N) {
+        const more = document.createElement('div');
+        more.className = 'panel-more';
+        more.textContent = `+ ${displayCounts.length - SHOW_N} more...`;
+        more.onclick = () => { panelState[col+'_showAll']=true; renderApp(); };
+        body.appendChild(more);
+      }
+
+      panel.appendChild(body);
+    }
+
+    sidebar.appendChild(panel);
+  });
+
+  main.appendChild(sidebar);
+
+  // --- CONTENT ---
+  const content = document.createElement('div');
+  content.id = 'content';
+
+  const grid = document.createElement('div');
+  grid.id = 'content-grid';
+
+  allCols.forEach(col => {
+    const counts = getCounts(filtered, col);
+    const total = filtered.length || 1;
+    const card = document.createElement('div');
+    card.className = 'summary-card';
+
+    let html = `<h3>${col}</h3>`;
+
+    counts.forEach(([val, count]) => {
+      const pct = ((count/total)*100).toFixed(1);
+      const barW = Math.round((count/total)*100);
+      html += `
+        <div class="summary-row">
+          <span class="summary-label" title="${val}">${val}</span>
+          <div class="summary-bar-track"><div class="summary-bar-fill" style="width:${barW}%"></div></div>
+          <span class="summary-count">${count.toLocaleString()}</span>
+          <span class="summary-pct">${pct}%</span>
+        </div>`;
+
+      // "Other" drill-down
+      if ((val.toLowerCase() === 'other' || val.toLowerCase() === 'others') && headers.includes('Other Issue Details')) {
+        const otherRows = filtered.filter(r => (r[col]||'').toLowerCase().startsWith('other'));
+        const detailCounts = {};
+        otherRows.forEach(r => {
+          const d = r['Other Issue Details'] || '(blank)';
+          detailCounts[d] = (detailCounts[d]||0)+1;
+        });
+        const details = Object.entries(detailCounts).sort((a,b)=>b[1]-a[1]).slice(0,8);
+        if (details.length > 0) {
+          html += `<div class="other-detail"><h4>Breakdown of "Other" entries:</h4>`;
+          details.forEach(([d,c]) => {
+            html += `<div class="other-item"><span>${d}</span><span>${c}</span></div>`;
+          });
+          html += `</div>`;
+        }
+      }
+    });
+
+    if (counts.length === 0) html += `<div style="font-size:12px;color:var(--text3);font-style:italic;">No data for current filters</div>`;
+
+    card.innerHTML = html;
+    grid.appendChild(card);
+  });
+
+  content.appendChild(grid);
+  main.appendChild(content);
+  app.appendChild(main);
+}
+
+function showLoading() {
+  document.getElementById('app').innerHTML = '<div id="loading"><div class="spinner"></div>Loading from Google Sheets...</div>';
+  document.getElementById('status-bar').style.display = 'none';
+}
+
+function showError(msg) {
+  document.getElementById('app').innerHTML = `<div id="error-msg">${msg}</div>
+    <div class="instructions" style="margin-top:0;">
+      <h2>Troubleshooting</h2>
+      <ol>
+        <li>Open your Google Sheet</li>
+        <li>Click <strong>Share</strong> (top right) &rarr; <strong>Change to anyone with the link</strong> &rarr; set to <strong>Viewer</strong></li>
+        <li>Copy the Sheet ID from the URL bar</li>
+        <li>Try loading again, or use the manual paste option below the button</li>
+      </ol>
+    </div>`;
+}
+
+function downloadCSV() {
+  const filtered = getFilteredRows();
+  if (!filtered.length) return;
+  const cols = headers;
+  const lines = [cols.join(',')];
+  filtered.forEach(row => {
+    lines.push(cols.map(c => `"${(row[c]||'').replace(/"/g,'""')}"`).join(','));
+  });
+  const blob = new Blob([lines.join('\n')], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `meru-survey-filtered-${filtered.length}rows.csv`;
+  a.click();
+}
+</script>
+</body>
+</html>
