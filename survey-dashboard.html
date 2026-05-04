@@ -264,6 +264,90 @@
   .paste-fallback { margin-top: 12px; }
   .paste-fallback summary { font-size: 12px; color: var(--text2); cursor: pointer; }
   .paste-fallback summary:hover { color: var(--accent); }
+
+  /* --- DRILL-DOWN MODAL --- */
+  #modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 1000;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 20px;
+    overflow-y: auto;
+  }
+  #modal-overlay.open { display: flex; }
+
+  #modal {
+    background: var(--surface);
+    border-radius: 6px;
+    width: 100%;
+    max-width: 960px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100vh - 80px);
+  }
+
+  #modal-header {
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  #modal-title { font-size: 14px; font-weight: bold; color: var(--accent); }
+  #modal-subtitle { font-size: 12px; color: var(--text2); margin-top: 2px; }
+  #modal-close {
+    background: none; border: none; font-size: 22px; color: var(--text2);
+    cursor: pointer; padding: 0 4px; line-height: 1; align-self: flex-start;
+  }
+  #modal-close:hover { color: var(--danger); background: none; }
+
+  #modal-toolbar {
+    padding: 10px 20px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  #modal-body { overflow-y: auto; flex: 1; }
+
+  #modal-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  #modal-table th {
+    background: var(--surface2);
+    padding: 7px 10px;
+    text-align: left;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text2);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+    white-space: nowrap;
+  }
+  #modal-table td {
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    max-width: 180px;
+    word-break: break-word;
+  }
+  #modal-table tr:hover td { background: var(--surface2); }
+  #modal-table tr:last-child td { border-bottom: none; }
+
+  .summary-count.clickable {
+    cursor: pointer;
+    color: var(--accent);
+    text-decoration: underline dotted;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+  .summary-count.clickable:hover { background: var(--accent-bg); text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -272,6 +356,26 @@
   <h1>Meru County Political Survey &mdash; Data Explorer</h1>
   <span id="header-info">No data loaded</span>
 </header>
+
+<!-- DRILL-DOWN MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div id="modal">
+    <div id="modal-header">
+      <div>
+        <div id="modal-title"></div>
+        <div id="modal-subtitle"></div>
+      </div>
+      <button id="modal-close" onclick="closeModal(null)">×</button>
+    </div>
+    <div id="modal-toolbar">
+      <button class="secondary" onclick="exportModalCSV()" style="font-size:12px;padding:5px 12px;">Export these rows</button>
+      <span id="modal-row-count" style="font-size:12px;color:var(--text2);"></span>
+    </div>
+    <div id="modal-body">
+      <table id="modal-table"><thead id="modal-thead"></thead><tbody id="modal-tbody"></tbody></table>
+    </div>
+  </div>
+</div>
 
 <div id="config-panel">
   <div class="config-group">
@@ -320,7 +424,7 @@
 
 <script>
 const FILTER_COLS = [
-  "Constituency","Ward","Gender","Age Group","Meru Sub-Tribe",
+  "Constituency","Ward","Polling Station","Gender","Age Group","Meru Sub-Tribe",
   "Preferred President","National Influencer","Mt Kenya Influence",
   "Local Influencer","Preferred MP","Supported Party"
 ];
@@ -561,11 +665,15 @@ function renderApp() {
     counts.forEach(([val, count]) => {
       const pct = ((count/total)*100).toFixed(1);
       const barW = Math.round((count/total)*100);
+      const isMulti = MULTI_COLS.includes(col);
+      // encode for data attribute
+      const encCol = col.replace(/"/g,'&quot;');
+      const encVal = val.replace(/"/g,'&quot;');
       html += `
         <div class="summary-row">
-          <span class="summary-label" title="${val}">${val}</span>
+          <span class="summary-label" title="${encVal}">${val}</span>
           <div class="summary-bar-track"><div class="summary-bar-fill" style="width:${barW}%"></div></div>
-          <span class="summary-count">${count.toLocaleString()}</span>
+          <span class="summary-count clickable" title="View ${count} rows for ${val}" data-col="${encCol}" data-val="${encVal}" data-multi="${isMulti}">${count.toLocaleString()}</span>
           <span class="summary-pct">${pct}%</span>
         </div>`;
 
@@ -595,6 +703,21 @@ function renderApp() {
   });
 
   content.appendChild(grid);
+
+  // Delegate clicks on count numbers → drill-down modal
+  grid.addEventListener('click', e => {
+    const span = e.target.closest('.summary-count.clickable');
+    if (!span) return;
+    const col = span.dataset.col;
+    const val = span.dataset.val;
+    const isMulti = span.dataset.multi === 'true';
+    const matchRows = filtered.filter(r => {
+      if (isMulti) return (r[col]||'').split(',').map(v=>v.trim()).includes(val);
+      return (r[col]||'') === val;
+    });
+    openDrillDown(col, val, matchRows);
+  });
+
   main.appendChild(content);
   app.appendChild(main);
 }
@@ -615,6 +738,53 @@ function showError(msg) {
         <li>Try loading again, or use the manual paste option below the button</li>
       </ol>
     </div>`;
+}
+
+let modalRows = [];
+let modalTitle = '';
+
+function openDrillDown(col, val, rows) {
+  modalRows = rows;
+  modalTitle = `${col}: ${val}`;
+  document.getElementById('modal-title').textContent = modalTitle;
+  document.getElementById('modal-subtitle').textContent = `${rows.length.toLocaleString()} entries`;
+  document.getElementById('modal-row-count').textContent = `${rows.length.toLocaleString()} rows`;
+
+  // Build table — show key columns first, then the rest
+  const KEY_COLS = ["Date","Constituency","Ward","Polling Station","Gender","Age Group","Meru Sub-Tribe",
+    "Preferred President","National Influencer","Mt Kenya Influence","Local Influencer",
+    "Preferred MP","Supported Party","Key Issues","Submitted By"];
+  const showCols = [...KEY_COLS.filter(c => headers.includes(c)),
+    ...headers.filter(c => !KEY_COLS.includes(c))];
+
+  const thead = document.getElementById('modal-thead');
+  const tbody = document.getElementById('modal-tbody');
+  thead.innerHTML = '<tr>' + showCols.map(c => `<th>${c}</th>`).join('') + '</tr>';
+  tbody.innerHTML = rows.map(r =>
+    '<tr>' + showCols.map(c => `<td title="${(r[c]||'').replace(/"/g,'&quot;')}">${r[c]||''}</td>`).join('') + '</tr>'
+  ).join('');
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(null); });
+
+function exportModalCSV() {
+  if (!modalRows.length) return;
+  const lines = [headers.join(',')];
+  modalRows.forEach(r => lines.push(headers.map(c => `"${(r[c]||'').replace(/"/g,'""')}"`).join(',')));
+  const blob = new Blob([lines.join('\n')], {type:'text/csv'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `${modalTitle.replace(/[^a-z0-9]/gi,'-').toLowerCase()}-${modalRows.length}rows.csv`;
+  a.click();
 }
 
 function downloadCSV() {
