@@ -348,6 +348,113 @@
     padding: 0 2px;
   }
   .summary-count.clickable:hover { background: var(--accent-bg); text-decoration: underline; }
+
+  /* ── Presidential Constituency Rating ── */
+  #pres-rating-section {
+    margin-top: 24px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+  #pres-rating-header {
+    background: var(--accent);
+    color: #fff;
+    padding: 11px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  #pres-rating-header h2 { font-size: 13px; font-weight: normal; letter-spacing: 0.04em; text-transform: uppercase; }
+  #pres-rating-controls { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+  #pres-rating-controls select {
+    padding: 4px 8px; border: 1px solid rgba(255,255,255,0.4); border-radius: 3px;
+    background: rgba(255,255,255,0.15); color: #fff; font-size: 12px; cursor: pointer;
+  }
+  #pres-rating-controls select option { background: #1a4d8f; color: #fff; }
+  .pres-view-btn {
+    padding: 4px 12px; border-radius: 3px; font-size: 11px; cursor: pointer;
+    border: 1px solid rgba(255,255,255,0.4); background: transparent; color: #fff;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .pres-view-btn.active { background: rgba(255,255,255,0.25); border-color: rgba(255,255,255,0.8); }
+  .pres-view-btn:hover { background: rgba(255,255,255,0.2); }
+
+  #pres-rating-body { padding: 16px 18px; overflow-x: auto; }
+
+  /* Table view */
+  #pres-table-wrap { overflow-x: auto; }
+  .pres-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 500px; }
+  .pres-table th {
+    background: var(--surface2); padding: 7px 10px; text-align: left;
+    font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em;
+    color: var(--text2); border-bottom: 2px solid var(--border); white-space: nowrap;
+    position: sticky; top: 0;
+  }
+  .pres-table th.candidate-col { text-align: center; max-width: 110px; }
+  .pres-table td { padding: 6px 10px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+  .pres-table tr:last-child td { border-bottom: none; }
+  .pres-table tr:hover td { background: var(--surface2); }
+  .pres-table td.constituency-cell { font-size: 12px; color: var(--text); font-weight: bold; white-space: nowrap; }
+  .pres-table td.total-cell { font-size: 11px; color: var(--text2); font-family: monospace; text-align: right; }
+  .pres-cell { text-align: center; }
+  .pres-cell-inner { display: inline-flex; flex-direction: column; align-items: center; gap: 2px; min-width: 70px; }
+  .pres-pct-label { font-size: 12px; font-family: monospace; font-weight: bold; }
+  .pres-mini-bar-track { width: 60px; height: 5px; background: var(--bar); border-radius: 3px; }
+  .pres-mini-bar-fill { height: 5px; border-radius: 3px; transition: width 0.3s; }
+  .pres-count-label { font-size: 10px; color: var(--text3); font-family: monospace; }
+  .pres-winner { background: #eaf3e0 !important; }
+  .pres-winner .pres-pct-label { color: #2d6a10; }
+  .pres-winner .pres-mini-bar-fill { background: #4a9e20; }
+  .rank-badge {
+    display: inline-block; width: 18px; height: 18px; border-radius: 50%;
+    font-size: 10px; line-height: 18px; text-align: center; font-family: monospace;
+    margin-right: 4px; flex-shrink: 0;
+  }
+  .rank-1 { background: #ffd700; color: #7a5000; }
+  .rank-2 { background: #c0c0c0; color: #444; }
+  .rank-3 { background: #cd7f32; color: #fff; }
+  .rank-other { background: var(--surface2); color: var(--text2); }
+
+  /* Chart / bar view */
+  #pres-chart-wrap { }
+  .pres-chart-block { margin-bottom: 18px; }
+  .pres-chart-title { font-size: 12px; font-weight: bold; color: var(--text); margin-bottom: 8px; padding-bottom: 4px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; }
+  .pres-chart-title .chart-total { font-size: 11px; font-weight: normal; color: var(--text3); font-family: monospace; }
+  .pres-chart-row { display: flex; align-items: center; gap: 8px; margin-bottom: 5px; }
+  .pres-chart-label { font-size: 11px; color: var(--text); min-width: 130px; max-width: 130px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .pres-chart-bar-track { flex: 1; height: 14px; background: var(--bar); border-radius: 3px; overflow: hidden; cursor: pointer; }
+  .pres-chart-bar-fill { height: 14px; border-radius: 3px; transition: width 0.3s; display: flex; align-items: center; padding-left: 5px; }
+  .pres-chart-bar-fill:hover { filter: brightness(1.1); }
+  .pres-chart-pct { font-size: 11px; font-family: monospace; color: var(--text2); min-width: 38px; text-align: right; }
+  .pres-chart-count { font-size: 10px; font-family: monospace; color: var(--text3); min-width: 34px; text-align: right; }
+
+  /* Heatmap view */
+  #pres-heatmap-wrap { overflow-x: auto; }
+  .pres-heatmap { border-collapse: collapse; font-size: 11px; }
+  .pres-heatmap th {
+    padding: 6px 10px; background: var(--surface2); font-size: 10px;
+    text-transform: uppercase; letter-spacing: 0.04em; color: var(--text2);
+    border: 1px solid var(--border); white-space: nowrap; text-align: center;
+  }
+  .pres-heatmap th.row-header { text-align: left; }
+  .pres-heatmap td { padding: 5px 8px; border: 1px solid var(--border); text-align: center; font-family: monospace; font-size: 11px; transition: opacity 0.2s; }
+  .pres-heatmap td.row-label { text-align: left; font-family: inherit; font-size: 11px; color: var(--text); font-weight: bold; white-space: nowrap; background: var(--surface2); }
+  .pres-heatmap-legend { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 11px; color: var(--text2); }
+  .pres-heatmap-legend .legend-bar { display: flex; height: 10px; width: 160px; border-radius: 3px; overflow: hidden; }
+
+  /* Summary leader board */
+  #pres-leaderboard { margin-bottom: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+  .leader-card {
+    background: var(--surface2); border: 1px solid var(--border); border-radius: 5px;
+    padding: 10px 14px; min-width: 130px; flex: 1;
+  }
+  .leader-card .leader-name { font-size: 12px; font-weight: bold; color: var(--accent); margin-bottom: 4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .leader-card .leader-wins { font-size: 20px; font-weight: bold; color: var(--text); }
+  .leader-card .leader-sub { font-size: 11px; color: var(--text2); }
+  .leader-card .leader-avg { font-size: 11px; color: var(--text3); font-family: monospace; }
 </style>
 </head>
 <body>
@@ -704,6 +811,11 @@ function renderApp() {
 
   content.appendChild(grid);
 
+  // --- PRESIDENTIAL CONSTITUENCY RATING ---
+  if (headers.includes('Preferred President') && headers.includes('Constituency')) {
+    content.appendChild(buildPresRatingSection(filtered));
+  }
+
   // Delegate clicks on count numbers → drill-down modal
   grid.addEventListener('click', e => {
     const span = e.target.closest('.summary-count.clickable');
@@ -800,6 +912,283 @@ function downloadCSV() {
   a.href = URL.createObjectURL(blob);
   a.download = `meru-survey-filtered-${filtered.length}rows.csv`;
   a.click();
+}
+
+// ── Presidential Constituency Rating ──────────────────────────────────────
+
+let presView = 'table'; // 'table' | 'chart' | 'heatmap'
+let presSelectedCandidate = '__all__';
+
+const CANDIDATE_COLORS = [
+  '#1a4d8f','#e05c2a','#2a8f4d','#8f2a6b','#6b4a1e',
+  '#1e7a8f','#8f7a1e','#4a1e8f','#1e8f5c','#8f2a2a'
+];
+
+function getPresData(rows) {
+  // Build: { constituency -> { candidate -> count } }
+  const data = {};
+  const candidateSet = new Set();
+  rows.forEach(r => {
+    const c = (r['Constituency']||'').trim();
+    const p = (r['Preferred President']||'').trim();
+    if (!c || !p) return;
+    if (!data[c]) data[c] = {};
+    data[c][p] = (data[c][p]||0) + 1;
+    candidateSet.add(p);
+  });
+  const candidates = [...candidateSet].sort((a,b) => {
+    // sort by overall total desc
+    const totA = Object.values(data).reduce((s,d)=>s+(d[a]||0),0);
+    const totB = Object.values(data).reduce((s,d)=>s+(d[b]||0),0);
+    return totB - totA;
+  });
+  const constituencies = Object.keys(data).sort();
+  return { data, candidates, constituencies };
+}
+
+function buildPresRatingSection(rows) {
+  const wrap = document.createElement('div');
+  wrap.id = 'pres-rating-section';
+
+  const { data, candidates, constituencies } = getPresData(rows);
+  if (!candidates.length || !constituencies.length) return wrap;
+
+  // header
+  const hdr = document.createElement('div');
+  hdr.id = 'pres-rating-header';
+
+  const candidateOptions = candidates.map(c =>
+    `<option value="${c}" ${c===presSelectedCandidate?'selected':''}>${c}</option>`
+  ).join('');
+
+  hdr.innerHTML = `
+    <h2>🗳 Presidential Candidate Constituency Rating</h2>
+    <div id="pres-rating-controls">
+      <select id="pres-candidate-select" onchange="presSelectedCandidate=this.value;rerenderPresSection()">
+        <option value="__all__" ${presSelectedCandidate==='__all__'?'selected':''}>All Candidates</option>
+        ${candidateOptions}
+      </select>
+      <button class="pres-view-btn ${presView==='table'?'active':''}" onclick="presView='table';rerenderPresSection()">Table</button>
+      <button class="pres-view-btn ${presView==='chart'?'active':''}" onclick="presView='chart';rerenderPresSection()">Chart</button>
+      <button class="pres-view-btn ${presView==='heatmap'?'active':''}" onclick="presView='heatmap';rerenderPresSection()">Heatmap</button>
+    </div>`;
+  wrap.appendChild(hdr);
+
+  const body = document.createElement('div');
+  body.id = 'pres-rating-body';
+  body.appendChild(buildPresLeaderboard(data, candidates));
+  body.appendChild(buildPresView(data, candidates, constituencies));
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function rerenderPresSection() {
+  const filtered = getFilteredRows();
+  const existing = document.getElementById('pres-rating-section');
+  if (!existing) return;
+  const fresh = buildPresRatingSection(filtered);
+  existing.replaceWith(fresh);
+}
+
+function buildPresLeaderboard(data, candidates) {
+  const board = document.createElement('div');
+  board.id = 'pres-leaderboard';
+  candidates.slice(0, 6).forEach((cand, i) => {
+    const color = CANDIDATE_COLORS[i % CANDIDATE_COLORS.length];
+    let wins = 0, totalVotes = 0, constCount = 0;
+    Object.entries(data).forEach(([con, counts]) => {
+      const myVotes = counts[cand] || 0;
+      totalVotes += myVotes;
+      constCount++;
+      const maxVotes = Math.max(...Object.values(counts));
+      if (myVotes === maxVotes && myVotes > 0) wins++;
+    });
+    const avgPct = constCount > 0 ?
+      (Object.values(data).reduce((s, counts) => {
+        const tot = Object.values(counts).reduce((a,b)=>a+b,0);
+        return s + (tot > 0 ? (counts[cand]||0)/tot*100 : 0);
+      }, 0) / constCount).toFixed(1) : '0.0';
+
+    const card = document.createElement('div');
+    card.className = 'leader-card';
+    card.style.borderTop = `3px solid ${color}`;
+    card.innerHTML = `
+      <div class="leader-name" title="${cand}">${cand}</div>
+      <div class="leader-wins">${wins} <span style="font-size:13px;color:var(--text2);">wins</span></div>
+      <div class="leader-sub">${totalVotes.toLocaleString()} total votes</div>
+      <div class="leader-avg">Avg ${avgPct}% per constituency</div>`;
+    board.appendChild(card);
+  });
+  return board;
+}
+
+function buildPresView(data, candidates, constituencies) {
+  const displayCandidates = presSelectedCandidate === '__all__' ? candidates : [presSelectedCandidate];
+
+  if (presView === 'table') return buildPresTable(data, displayCandidates, constituencies);
+  if (presView === 'chart') return buildPresChart(data, displayCandidates, constituencies);
+  if (presView === 'heatmap') return buildPresHeatmap(data, candidates, constituencies);
+  return document.createElement('div');
+}
+
+function buildPresTable(data, candidates, constituencies) {
+  const wrap = document.createElement('div');
+  wrap.id = 'pres-table-wrap';
+
+  const table = document.createElement('table');
+  table.className = 'pres-table';
+
+  // header
+  const thead = document.createElement('thead');
+  let thHtml = `<tr><th>Constituency</th>`;
+  candidates.forEach((c, i) => {
+    thHtml += `<th class="candidate-col" style="border-bottom-color:${CANDIDATE_COLORS[i%CANDIDATE_COLORS.length]}">${c}</th>`;
+  });
+  thHtml += `<th style="text-align:right">Total</th><th>Winner</th></tr>`;
+  thead.innerHTML = thHtml;
+  table.appendChild(thead);
+
+  const tbody = document.createElement('tbody');
+  constituencies.forEach(con => {
+    const counts = data[con];
+    const total = Object.values(counts).reduce((a,b)=>a+b,0);
+    const winner = Object.entries(counts).sort((a,b)=>b[1]-a[1])[0]?.[0] || '';
+    const tr = document.createElement('tr');
+    let tdHtml = `<td class="constituency-cell">${con}</td>`;
+    candidates.forEach((cand, i) => {
+      const count = counts[cand] || 0;
+      const pct = total > 0 ? (count/total*100).toFixed(1) : '0.0';
+      const isWinner = cand === winner && count > 0;
+      const color = CANDIDATE_COLORS[i%CANDIDATE_COLORS.length];
+      tdHtml += `<td class="pres-cell${isWinner?' pres-winner':''}">
+        <div class="pres-cell-inner">
+          <span class="pres-pct-label" style="${!isWinner?`color:${color}`:''};">${pct}%</span>
+          <div class="pres-mini-bar-track">
+            <div class="pres-mini-bar-fill" style="width:${pct}%;background:${isWinner?'#4a9e20':color}"></div>
+          </div>
+          <span class="pres-count-label">${count.toLocaleString()}</span>
+        </div>
+      </td>`;
+    });
+    // winner badge
+    const winnerIdx = candidates.indexOf(winner);
+    const winColor = winnerIdx >= 0 ? CANDIDATE_COLORS[winnerIdx%CANDIDATE_COLORS.length] : '#999';
+    tdHtml += `<td class="total-cell">${total.toLocaleString()}</td>`;
+    tdHtml += `<td style="white-space:nowrap;font-size:11px;">
+      <span style="display:inline-flex;align-items:center;gap:4px;">
+        <span style="width:8px;height:8px;border-radius:50%;background:${winColor};display:inline-block;"></span>
+        ${winner}
+      </span>
+    </td>`;
+    tr.innerHTML = tdHtml;
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+  return wrap;
+}
+
+function buildPresChart(data, candidates, constituencies) {
+  const wrap = document.createElement('div');
+  wrap.id = 'pres-chart-wrap';
+
+  constituencies.forEach(con => {
+    const counts = data[con];
+    const total = Object.values(counts).reduce((a,b)=>a+b,0);
+    const block = document.createElement('div');
+    block.className = 'pres-chart-block';
+    block.innerHTML = `<div class="pres-chart-title">${con} <span class="chart-total">${total.toLocaleString()} respondents</span></div>`;
+
+    // sort by count desc within this constituency
+    const sorted = candidates.map((cand, i) => ({
+      cand, count: counts[cand]||0, color: CANDIDATE_COLORS[i%CANDIDATE_COLORS.length]
+    })).sort((a,b)=>b.count-a.count);
+
+    const maxCount = sorted[0]?.count || 1;
+    sorted.forEach((item, rank) => {
+      const pct = total > 0 ? (item.count/total*100).toFixed(1) : '0.0';
+      const barW = Math.round((item.count/maxCount)*100);
+      const row = document.createElement('div');
+      row.className = 'pres-chart-row';
+      let badge = '';
+      if (rank===0 && item.count>0) badge = `<span class="rank-badge rank-1">1</span>`;
+      else if (rank===1) badge = `<span class="rank-badge rank-2">2</span>`;
+      else if (rank===2) badge = `<span class="rank-badge rank-3">3</span>`;
+      else badge = `<span class="rank-badge rank-other">${rank+1}</span>`;
+      row.innerHTML = `
+        <div class="pres-chart-label" style="display:flex;align-items:center;gap:3px;" title="${item.cand}">${badge}${item.cand}</div>
+        <div class="pres-chart-bar-track" title="${item.cand}: ${item.count} votes (${pct}%)">
+          <div class="pres-chart-bar-fill" style="width:${barW}%;background:${item.color}"></div>
+        </div>
+        <span class="pres-chart-pct">${pct}%</span>
+        <span class="pres-chart-count">${item.count.toLocaleString()}</span>`;
+      block.appendChild(row);
+    });
+    wrap.appendChild(block);
+  });
+  return wrap;
+}
+
+function buildPresHeatmap(data, candidates, constituencies) {
+  const wrap = document.createElement('div');
+  wrap.id = 'pres-heatmap-wrap';
+
+  // find global max pct for color scaling
+  let globalMax = 0;
+  constituencies.forEach(con => {
+    const tot = Object.values(data[con]).reduce((a,b)=>a+b,0);
+    candidates.forEach(cand => {
+      const pct = tot > 0 ? (data[con][cand]||0)/tot*100 : 0;
+      if (pct > globalMax) globalMax = pct;
+    });
+  });
+
+  const table = document.createElement('table');
+  table.className = 'pres-heatmap';
+
+  let hdr = `<thead><tr><th class="row-header">Constituency</th>`;
+  candidates.forEach((c,i) => {
+    hdr += `<th style="border-bottom:3px solid ${CANDIDATE_COLORS[i%CANDIDATE_COLORS.length]}">${c}</th>`;
+  });
+  hdr += `<th>Total</th></tr></thead>`;
+  table.innerHTML = hdr;
+
+  const tbody = document.createElement('tbody');
+  constituencies.forEach(con => {
+    const counts = data[con];
+    const total = Object.values(counts).reduce((a,b)=>a+b,0);
+    const tr = document.createElement('tr');
+    let tdHtml = `<td class="row-label">${con}</td>`;
+    candidates.forEach((cand, i) => {
+      const count = counts[cand]||0;
+      const pct = total > 0 ? (count/total*100) : 0;
+      const intensity = globalMax > 0 ? pct/globalMax : 0;
+      const color = CANDIDATE_COLORS[i%CANDIDATE_COLORS.length];
+      // hex to rgba
+      const r = parseInt(color.slice(1,3),16);
+      const g = parseInt(color.slice(3,5),16);
+      const b = parseInt(color.slice(5,7),16);
+      const bg = `rgba(${r},${g},${b},${(intensity*0.75+0.05).toFixed(2)})`;
+      const textColor = intensity > 0.5 ? '#fff' : '#333';
+      tdHtml += `<td style="background:${bg};color:${textColor}" title="${cand} in ${con}: ${count} votes (${pct.toFixed(1)}%)">${pct.toFixed(1)}%</td>`;
+    });
+    tdHtml += `<td style="font-size:11px;color:var(--text3)">${total.toLocaleString()}</td>`;
+    tr.innerHTML = tdHtml;
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody);
+  wrap.appendChild(table);
+
+  // legend
+  const legend = document.createElement('div');
+  legend.className = 'pres-heatmap-legend';
+  legend.innerHTML = `
+    <span>Low support</span>
+    <div class="legend-bar" style="background:linear-gradient(to right, rgba(26,77,143,0.05), rgba(26,77,143,0.8))"></div>
+    <span>High support</span>
+    <span style="margin-left:12px;color:var(--text3);">Each cell = % of constituency respondents who prefer that candidate</span>`;
+  wrap.appendChild(legend);
+  return wrap;
 }
 </script>
 </body>
